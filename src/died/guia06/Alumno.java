@@ -11,7 +11,7 @@ public class Alumno implements Comparable {
 	private List<Curso> cursando;
 	private List<Curso> aprobados;
 	
-	
+	//getters and setters
 	public Integer getNroLibreta() {
 		return nroLibreta;
 	}
