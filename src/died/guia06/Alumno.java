@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Alumno implements Comparable {
+public class Alumno{
 
 	private String nombre;
 	private Integer nroLibreta;
 	private List<Curso> cursando;
 	private List<Curso> aprobados;
 	
-	//getters and setters
+	
 	public Integer getNroLibreta() {
 		return nroLibreta;
 	}
@@ -89,17 +89,8 @@ public class Alumno implements Comparable {
 		return cantidad;
 	}
 
-	//no se si era esta la finalidad del metodo
-	public int comparar(Alumno o) {
-		int comparacion = (this.getNombre()).compareToIgnoreCase(o.getNombre());
-		if(comparacion < 0) {
-			System.out.println(""+ this.getNombre() + " es primero por orden alfabetico");
-		}
-		else if(comparacion < 0) {
-			System.out.println(""+ o.getNombre() + " es primero por orden alfabetico");
-		}
-		return comparacion;
-	}
+	
+	
 	
 	
 	

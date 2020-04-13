@@ -2,6 +2,7 @@ package died.guia06;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import died.guia06.util.Registro;
@@ -156,8 +157,20 @@ public class Curso {
 	 */
 	public void imprimirInscriptos() {
 		try {
+			
+			Alumno[] arregloAImprimir = new Alumno[this.inscriptos.size()];
+			arregloAImprimir = this.inscriptos.toArray(arregloAImprimir);
+			
 			log.registrar(this, "imprimir listado",this.inscriptos.size()+ " registros ");
+			
+			Arrays.sort(arregloAImprimir,new CompararAlumnoAlfabeticamente());
+			
+			for(Alumno a: arregloAImprimir) {
+				System.out.println("" + a.getNombre() + " Nro de libreta: " + a.getNroLibreta());
 			}
+			
+			}
+		
 		catch(IOException i){
 			i.printStackTrace();
 		}
