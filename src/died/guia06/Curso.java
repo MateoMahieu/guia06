@@ -143,6 +143,7 @@ public class Curso {
 		
 		catch (IOException e) 
 		{
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -180,9 +181,10 @@ public class Curso {
 			
 			}
 		
-		catch(IOException i){
+		catch(IOException e){
 			
 			throw new RegistroAuditoriaException("Error de regitro");
+			
 		}
 		
 	}
@@ -190,7 +192,8 @@ public class Curso {
 	
 	
 	public void inscribirAlumno(Alumno a) throws NoTieneCreditosRequeridosException,CupoCubiertoException,TodasMateriasRegularException, RegistroAuditoriaException{
-			
+		
+	try {
 		if(a.creditosObtenidos() < this.creditosRequeridos) {
 			throw new NoTieneCreditosRequeridosException("No tiene los creditos suficientes para inscribirse en el curso");
 		}
@@ -202,12 +205,12 @@ public class Curso {
 		if(a.cantidadDeMateriaCursandoDelMismoCicloLectivo(this.cicloLectivo) > 3){
 			throw new TodasMateriasRegularException("Todas las materias del curso regular");
 		}
-		try {
-			inscribir(a);
-	}
-		catch (IOException i) {
 			
-			new RegistroAuditoriaException("Error de registro");
+		inscribir(a);
+	}
+		catch (IOException e) {
+			
+			System.out.println(e.getMessage());
 			
 		}	
 			
