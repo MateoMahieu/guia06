@@ -102,7 +102,7 @@ public class Alumno{
 	public Integer cantidadDeMateriaCursandoDelMismoCicloLectivo(Integer ciclo) {
 		Integer cantidad = 0;
 		for(Curso c: this.cursando) {
-			if(c.getCicloLectivo().equals(ciclo)) cantidad++;
+			if(c.getCicloLectivo().equals(ciclo)) cantidad = cantidad + 1;
 		}
 		return cantidad;
 	}

@@ -4,46 +4,37 @@ import java.io.IOException;
 
 public class App {
 
-	public static void main(String[] args) throws TodasMateriasRegularException, NoTieneCreditosRequeridosException , CupoCubiertoException, RegistroAuditoriaException{
+	public static void main(String[] args) throws InscribirAlumnoException, RegistroAuditoriaException{
+		
+		
 		
 		Alumno a1 = new Alumno("Maria",100);
 		Alumno a2 = new Alumno("Juan",101);
 		Alumno a3 = new Alumno("Carlos",102);
 		
-		Curso c1 = new Curso(1,"Died",2020,0,5,0);
-		Curso c2 = new Curso(1,"Algebra",2020,40,5,10);
+		Curso c1 = new Curso(1,"Died",2020,30,5,0);
+		Curso c2 = new Curso(2,"Algebra",2020,40,5,0);
+		Curso c3 = new Curso(3,"Gestion de datos",2020,30,5,10);
 		
-
-			try {
-				c2.inscribirAlumno(a3);
-				}
+		try {
+			c2.inscribirAlumno(a3);
+			c3.inscribirAlumno(a2);
+			c1.inscribirAlumno(a3);
 			
-			catch (TodasMateriasRegularException | NoTieneCreditosRequeridosException | CupoCubiertoException | RegistroAuditoriaException e) {
-				e.printStackTrace();
-			}
+			a1.aprobar(c2);
+			a3.aprobar(c2);
 			
-			try {
-				c1.inscribirAlumno(a2);
-				}
 			
-			catch (TodasMateriasRegularException | NoTieneCreditosRequeridosException | CupoCubiertoException | RegistroAuditoriaException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				c1.imprimirInscriptos("alfabeticamente");
-				}
-			
-			catch (RegistroAuditoriaException e) {
-				e.printStackTrace();
-			}
-	
-	
-//		
-//		a1.aprobar(c2);
-//		a3.aprobar(c2);
-//		
-//		
+		}
+		catch (InscribirAlumnoException | RegistroAuditoriaException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
 //		System.out.println("Creditos obtenidos por "+ a2.getNombre() + " " + a2.creditosObtenidos());
 //		System.out.println("Creditos obtenidos por "+ a1.getNombre() + " " + a1.creditosObtenidos());
 //		

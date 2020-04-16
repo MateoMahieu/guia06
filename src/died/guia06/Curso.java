@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 import died.guia06.util.Registro;
 
 
@@ -35,13 +36,13 @@ public class Curso {
 	}
 	
 	
-	public Curso(Integer id, String nombre, Integer cicloLectivo, Integer cupo,
-			Integer creditos, Integer creditosRequeridos) {
+	public Curso(Integer id, String nombre, Integer cicloLectivo, Integer cupo,Integer creditos, Integer creditosRequeridos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.cicloLectivo = cicloLectivo;
 		this.cupo = cupo;
+		this.log = new Registro();
 		this.inscriptos = new ArrayList<Alumno>();
 		this.creditos = creditos;
 		this.creditosRequeridos = creditosRequeridos;
@@ -130,31 +131,27 @@ public class Curso {
 	 *      c) puede estar inscripto en simultáneo a no más de 3 cursos del mismo ciclo lectivo.
 	 * @param a
 	 * @return
+	 * @throws IOException 
+	 * @throws RegistroAuditoriaException 
 	 */
 	public Boolean inscribir(Alumno a) throws IOException{
-		
-		try {
-				log.registrar(this, "inscribir ",a.toString());
+	
+				log.registrar(this,"inscribir ",a.toString());
 				this.cupo -= 1;
 				this.inscriptos.add(a);
 				a.inscripcionAceptada(this);
 				return true;
-			} 
 		
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		return false;
 	}
-	
 	
 	
 	/**
 	 * imprime los inscriptos en orden alfabetico o nro de libreta
+	 * @throws RegistroAuditoriaException 
 	 */
 	
-	public void imprimirInscriptos(String orden) throws RegistroAuditoriaException{
+	public void imprimirInscriptos(String orden){
+		
 		try {
 			
 			log.registrar(this, "imprimir listado",this.inscriptos.size()+ " registros ");
@@ -162,60 +159,62 @@ public class Curso {
 			switch (orden.toLowerCase()) {
 			
 			case ("nrolibreta"):
+				
 				Collections.sort(this.inscriptos,new CompararAlumnoPorNumeroLibreta());
+				
 				break;
 				
 			case ("alfabeticamente"):
 				
-				Collections.sort(this.inscriptos,new CompararAlumnoPorNumeroLibreta());
-				break;
-				
-			default:
 				Collections.sort(this.inscriptos,new CompararAlumnoAlfabeticamente());
 				break;
 			}
-		
-			for(Alumno a: this.inscriptos) {
-				System.out.println("" + a.getNombre() + " Nro de libreta: " + a.getNroLibreta());
+				for(Alumno a: this.inscriptos) {
+					System.out.println("" + a.getNombre() + " Nro de libreta: " + a.getNroLibreta());
 			}
-			
-			}
-		
+		}
 		catch(IOException e){
 			
-			throw new RegistroAuditoriaException("Error de regitro");
-			
-		}
-		
-	}
-	
-	
-	
-	public void inscribirAlumno(Alumno a) throws NoTieneCreditosRequeridosException,CupoCubiertoException,TodasMateriasRegularException, RegistroAuditoriaException{
-		
-	try {
-		if(a.creditosObtenidos() < this.creditosRequeridos) {
-			throw new NoTieneCreditosRequeridosException("No tiene los creditos suficientes para inscribirse en el curso");
-		}
-		
-		if(this.cupo == 0) {
-			throw new CupoCubiertoException("Cupo del curso cubierto");
-		}
-		
-		if(a.cantidadDeMateriaCursandoDelMismoCicloLectivo(this.cicloLectivo) > 3){
-			throw new TodasMateriasRegularException("Todas las materias del curso regular");
-		}
-			
-		inscribir(a);
-	}
-		catch (IOException e) {
-			
-			System.out.println(e.getMessage());
-			
 		}	
-			
 	}
+	
+	
+	public void inscribirAlumno(Alumno a) throws InscribirAlumnoException, RegistroAuditoriaException{
 
+				
+		if(a.creditosObtenidos() >= this.creditosRequeridos) {
+			
+			if(this.cupo > 0) {
+				
+				if(a.cantidadDeMateriaCursandoDelMismoCicloLectivo(this.cicloLectivo) < 3) {
+					
+					try {
+						
+						inscribir(a);
+						
+					}
+					catch (IOException e) {
+						throw new RegistroAuditoriaException("Error de registro");
+					}
+				}
+				
+				else {
+					throw new InscribirAlumnoException("Ya tiene todas las materias de cursado regular");
+				}
+				
+			}	
+			
+			else {
+				throw new InscribirAlumnoException("Cupo del curso cubierto");
+			}
+		
+		}
+		
+		else {
+			throw new InscribirAlumnoException("No tiene los creditos suficientes para inscribirse en el curso");
+		}
+		
+	}
 	
 
 }

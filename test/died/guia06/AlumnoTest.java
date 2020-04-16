@@ -21,6 +21,14 @@ class AlumnoTest {
 		a1.aprobar(c1);
 		assertEquals(1,a1.getAprobados().size());	
 	}
+	
+	@Test
+	void testNoAprobar() {
+		Curso c1 = new Curso(1,"Died",2020,30,5,5);
+		Alumno a1 = new Alumno("Juan",1000);
+		a1.aprobar(c1);
+		assertEquals(0,a1.getAprobados().size());	
+	}
 
 	@Test
 	void testInscripcionAceptada() {
