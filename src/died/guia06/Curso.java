@@ -2,7 +2,7 @@ package died.guia06;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import died.guia06.util.Registro;
@@ -131,54 +131,88 @@ public class Curso {
 	 * @param a
 	 * @return
 	 */
-	public Boolean inscribir(Alumno a) {
+	public Boolean inscribir(Alumno a) throws IOException{
+		
 		try {
-			
-			if(a.creditosObtenidos() >= this.creditosRequeridos && this.cupo > 0 && a.cantidadDeMateriaCursandoDelMismoCicloLectivo(this.cicloLectivo) <= 3) 
-			{
 				log.registrar(this, "inscribir ",a.toString());
+				this.cupo -= 1;
 				this.inscriptos.add(a);
-				this.cupo--;
 				a.inscripcionAceptada(this);
-			}
-			}
+				return true;
+			} 
 		
-		catch (IOException i) {
-			
-			i.printStackTrace();
-		
+		catch (IOException e) 
+		{
 		}
 		return false;
 	}
 	
 	
+	
 	/**
-	 * imprime los inscriptos en orden alfabetico
+	 * imprime los inscriptos en orden alfabetico o nro de libreta
 	 */
-	public void imprimirInscriptos() {
+	
+	public void imprimirInscriptos(String orden) throws RegistroAuditoriaException{
 		try {
-			
-			Alumno[] arregloAImprimir = new Alumno[this.inscriptos.size()];
-			arregloAImprimir = this.inscriptos.toArray(arregloAImprimir);
 			
 			log.registrar(this, "imprimir listado",this.inscriptos.size()+ " registros ");
 			
-			Arrays.sort(arregloAImprimir,new CompararAlumnoAlfabeticamente());
+			switch (orden.toLowerCase()) {
 			
-			for(Alumno a: arregloAImprimir) {
+			case ("nrolibreta"):
+				Collections.sort(this.inscriptos,new CompararAlumnoPorNumeroLibreta());
+				break;
+				
+			case ("alfabeticamente"):
+				
+				Collections.sort(this.inscriptos,new CompararAlumnoPorNumeroLibreta());
+				break;
+				
+			default:
+				Collections.sort(this.inscriptos,new CompararAlumnoAlfabeticamente());
+				break;
+			}
+		
+			for(Alumno a: this.inscriptos) {
 				System.out.println("" + a.getNombre() + " Nro de libreta: " + a.getNroLibreta());
 			}
 			
 			}
 		
 		catch(IOException i){
-			i.printStackTrace();
+			
+			throw new RegistroAuditoriaException("Error de regitro");
 		}
+		
 	}
 	
-
-
 	
+	
+	public void inscribirAlumno(Alumno a) throws NoTieneCreditosRequeridosException,CupoCubiertoException,TodasMateriasRegularException, RegistroAuditoriaException{
+			
+		if(a.creditosObtenidos() < this.creditosRequeridos) {
+			throw new NoTieneCreditosRequeridosException("No tiene los creditos suficientes para inscribirse en el curso");
+		}
+		
+		if(this.cupo == 0) {
+			throw new CupoCubiertoException("Cupo del curso cubierto");
+		}
+		
+		if(a.cantidadDeMateriaCursandoDelMismoCicloLectivo(this.cicloLectivo) > 3){
+			throw new TodasMateriasRegularException("Todas las materias del curso regular");
+		}
+		try {
+			inscribir(a);
+	}
+		catch (IOException i) {
+			
+			new RegistroAuditoriaException("Error de registro");
+			
+		}	
+			
+	}
+
 	
 
 }

@@ -26,9 +26,35 @@ public class Alumno{
 		this.nombre = nombre;
 	}
 	
+	
+	public List<Curso> getCursando() {
+		return cursando;
+	}
+
+
+	public void setCursando(List<Curso> cursando) {
+		this.cursando = cursando;
+	}
+
+
+	public List<Curso> getAprobados() {
+		return aprobados;
+	}
+
+
+	public void setAprobados(List<Curso> aprobados) {
+		this.aprobados = aprobados;
+	}
+
 
 	public int creditosObtenidos() {
-		return 1;
+		Integer suma = 0;
+		if(this.aprobados != null) {
+			for(Curso c: aprobados) {
+				suma += c.getCreditos(); 
+				}
+		}
+		return suma;
 	}
 
 	
@@ -51,6 +77,7 @@ public class Alumno{
 			
 			this.cursando.remove(c);
 			this.aprobados.add(c);
+			
 	}
 		else System.out.println("No esta inscripto al curso");
 	}
@@ -65,15 +92,6 @@ public class Alumno{
 	public void setNroLibreta(Integer nroLibreta) {
 		this.nroLibreta = nroLibreta;
 	}
-	
-	
-	public Integer obtenerCreditosQuePosee() {
-		Integer suma = 0;
-		for(Curso c: aprobados) {
-			suma += c.getCreditos(); 
-		}
-		return suma;
-	}
 
 
 	public boolean equals(Object o) {
@@ -83,16 +101,11 @@ public class Alumno{
 	
 	public Integer cantidadDeMateriaCursandoDelMismoCicloLectivo(Integer ciclo) {
 		Integer cantidad = 0;
-		for(Curso c: cursando) {
-			if(c.getCicloLectivo() == ciclo) cantidad++;
+		for(Curso c: this.cursando) {
+			if(c.getCicloLectivo().equals(ciclo)) cantidad++;
 		}
 		return cantidad;
 	}
 
-	
-	
-	
-	
-	
 	
 }
