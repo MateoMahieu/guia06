@@ -199,19 +199,19 @@ public class Curso {
 				}
 				
 				else {
-					throw new InscribirAlumnoException("Ya tiene todas las materias de cursado regular");
+					throw new InscribirAlumnoException("" + a.getNombre() + " ya tiene todas las materias de cursado regular");
 				}
 				
 			}	
 			
 			else {
-				throw new InscribirAlumnoException("Cupo del curso cubierto");
+				throw new InscribirAlumnoException("Cupo del curso " + this.getNombre() + " cubierto");
 			}
 		
 		}
 		
 		else {
-			throw new InscribirAlumnoException("No tiene los creditos suficientes para inscribirse en el curso");
+			throw new InscribirAlumnoException("" + a.getNombre() + " no tiene los creditos suficientes para inscribirse en el curso " + this.getNombre() );
 		}
 		
 	}

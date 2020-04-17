@@ -79,13 +79,13 @@ public class Alumno{
 			this.aprobados.add(c);
 			
 	}
-		else System.out.println("No esta inscripto al curso");
+		else System.out.println("" + this.getNombre() + " no esta inscripto/a en el curso " + c.getNombre());
 	}
 
 	
 	public void inscripcionAceptada(Curso c) {
 		this.cursando.add(c);
-		System.out.println("Se ha inscripto al curso "+ ((Curso)c).getNombre() +" correctamente.");
+		System.out.println("" + this.getNombre() +" se ha inscripto al curso "+ ((Curso)c).getNombre() +" correctamente.");
 	}
 	
 
